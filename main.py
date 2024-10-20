@@ -1,6 +1,7 @@
 import streamlit as st
 import joblib
 import numpy as np
+import pandas as pd
 
 # Load the trained model and label encoder
 clf = joblib.load('disease_prediction_model.joblib')
@@ -10,7 +11,7 @@ le = joblib.load('label_encoder.joblib')
 all_symptoms = [
     "itching", "skin_rash", "nodal_skin_eruptions", "continuous_sneezing", 
     "shivering", "chills", "joint_pain", "stomach_pain", "acidity", "ulcers_on_tongue",
-    "muscle_wasting", "vomiting", "burning_micturition", "spotting_urination", "fatigue",
+    "muscle_wasting", "vomiting", "burning_micturition", "spotting_ urination", "fatigue",
     "weight_gain", "anxiety", "cold_hands_and_feets", "mood_swings", "weight_loss",
     "restlessness", "lethargy", "patches_in_throat", "irregular_sugar_level", "cough",
     "high_fever", "sunken_eyes", "breathlessness", "sweating", "dehydration",
@@ -28,14 +29,14 @@ all_symptoms = [
     "slurred_speech", "knee_pain", "hip_joint_pain", "muscle_weakness", "stiff_neck", 
     "swelling_joints", "movement_stiffness", "spinning_movements", "loss_of_balance", 
     "unsteadiness", "weakness_of_one_body_side", "loss_of_smell", "bladder_discomfort",
-    "foul_smell_of_urine", "continuous_feel_of_urine", "passage_of_gases", 
+    "foul_smell_of urine", "continuous_feel_of_urine", "passage_of_gases", 
     "internal_itching", "toxic_look_(typhos)", "depression", "irritability", 
     "muscle_pain", "altered_sensorium", "red_spots_over_body", "belly_pain", 
-    "abnormal_menstruation", "dischromic_patches", "watering_from_eyes", 
+    "abnormal_menstruation", "dischromic _patches", "watering_from_eyes", 
     "increased_appetite", "polyuria", "family_history", "mucoid_sputum", "rusty_sputum", 
     "lack_of_concentration", "visual_disturbances", "receiving_blood_transfusion", 
     "receiving_unsterile_injections", "coma", "stomach_bleeding", "distention_of_abdomen", 
-    "history_of_alcohol_consumption", "fluid_overload", "blood_in_sputum", 
+    "history_of_alcohol_consumption", "fluid_overload.1", "blood_in_sputum", 
     "prominent_veins_on_calf", "palpitations", "painful_walking", "pus_filled_pimples", 
     "blackheads", "scurring", "skin_peeling", "silver_like_dusting", 
     "small_dents_in_nails", "inflammatory_nails", "blister", "red_sore_around_nose", 
@@ -70,8 +71,11 @@ def main():
                     index = all_symptoms.index(symptom)
                     symptoms[0, index] = 1  # Set the corresponding symptom to 1
 
+            # Convert to pandas DataFrame with proper column names
+            symptoms_df = pd.DataFrame(symptoms, columns=all_symptoms)
+
             # Predict the disease
-            prediction = clf.predict(symptoms)
+            prediction = clf.predict(symptoms_df)
             predicted_disease = le.inverse_transform(prediction)[0]
 
             # Display the prediction
